@@ -3,9 +3,6 @@ package com.example.voiceconvertion
 import android.media.*
 import android.util.Log
 import kotlin.math.max
-import kotlin.math.sin
-import kotlin.math.PI
-
 
 //音声録音･再生に関しては反響があるがとりあえず実装
 /**
@@ -79,10 +76,6 @@ class AudioRecordSample {
         // 音声データを幾つずつ処理するか( = 1フレームのデータの数)
         audioRecord.positionNotificationPeriod = oneFrameDataCount
 
-        // ここで指定した数になったタイミングで, 後続の onMarkerReached が呼び出される
-        // 通常のストリーミング処理では必要なさそう？
-        audioRecord.notificationMarkerPosition = 40000 // 使わないなら設定しない.
-
         // 音声データを格納する配列
         val audioDataArray = ShortArray(oneFrameDataCount)
         player.play()
@@ -106,27 +99,12 @@ class AudioRecordSample {
                     audioDataArray[index] = (outputData[index] * 32768.0).toShort()
                 }
                 Log.v("AudioRecord", "data[1000]=${audioDataArray[1000]}")
-                // 好きに処理する
-                //val tmparray = shortToByteOfArray(sinarray)
-                //val tmparray = shortToByteOfArray(audioDataArray)
-                //Log.v("AudioRecord", "data[1000]=${tmparray[1000]}")
-                //var tmp = ShortArray(oneFrameDataCount)
-                //for(index in tmp.indices)
-                //{
-                //    tmp[index] = sinarray[count*oneFrameDataCount + index]
-                //}
-                //Log.v("AudioRecord", "sindata[1000]=${sinarray[1000]}")
                 player.write(audioDataArray, 0, audioDataArray.size)
-                //count++
-                //if(count == frameRate) count = 0
             }
 
             // マーカータイミングの処理.
             // notificationMarkerPosition に到達した際に呼ばれる
             override fun onMarkerReached(recorder: AudioRecord) {
-                recorder.read(audioDataArray, 0, oneFrameDataCount) // 音声データ読込
-                Log.v("AudioRecord", "onMarkerReached size=${audioDataArray.size}")
-                // 好きに処理する
             }
         })
 
