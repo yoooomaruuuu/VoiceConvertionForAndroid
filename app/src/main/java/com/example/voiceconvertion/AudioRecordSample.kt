@@ -40,8 +40,6 @@ class AudioRecordSample {
                 AudioFormat.CHANNEL_IN_MONO,
                 AudioFormat.ENCODING_PCM_16BIT))
 
-    var count = 0
-
     var dataTmp = ByteArray(getTestSize())
     var funcTmp = ByteArray(getTestSize())
     var inputData = DoubleArray(oneFrameDataCount)
